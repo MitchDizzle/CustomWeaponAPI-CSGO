@@ -1,0 +1,28 @@
+"weapon_example" { //Classname of the weapon
+	"name"			"Example Gun"
+	"baseindex"		"7" //weapon_ak47
+	"type"			"weapon" //weapon, item, etc.
+	"attributes" {
+		"block fire" { //Example attribute that blocks the fire of the weapon
+			"plugin"	"customweapons-example"
+			"value"		"1"
+		}
+	}
+	//The viewmodelprops and worldmodelprops both count towards the entity limit, and both have transmit hooks.
+	"viewmodel"		"" //Path to the custom viewmodel
+	"viewmodelprops" {
+		"MODEL_PATH" { //Model of the custom attachement
+			"attach"	"" //Attachment point for the viewmodel
+			"offset"	"" //Offset of the attachment point
+			"angle"		"" //Offset angle of the attachment prop
+		}
+	}
+	"worldmodel"		"" //Path to the custom worldmodel
+	"worldmodelprops" {
+		"MODEL_PATH" { //Model of the custom attachement
+			"attach"	"" //Attachment point for the viewmodel
+			"offset"	"" //Offset of the attachment point
+			"angle"		"" //Offset angle of the attachment prop
+		}
+	}
+}

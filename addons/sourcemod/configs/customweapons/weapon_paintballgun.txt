@@ -1,0 +1,15 @@
+"weapon_paintballgun" { //Classname of the weapon
+	"name"			"Paintball Gun"
+	"baseindex"		"7" //weapon_ak47
+	"type"			"weapon" //weapon, item, etc.
+	"attributes" {
+		"block fire" { //Example attribute that blocks the fire of the weapon
+			"plugin"	"customweapons-example"
+			"value"		"1"
+		}
+		"paintball" { //Example attribute that blocks the fire of the weapon
+			"plugin"	"customweapons-example"
+			"value"		"1"
+		}
+	}
+}
