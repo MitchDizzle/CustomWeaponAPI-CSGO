@@ -43,10 +43,10 @@ int wpnType[MAXWEAPONS]; // 0- Weapon, 1- Item
 
 //Weapon Attributes
 #define MAXATTRIB 10
-/*int wpnAttributes;
+int wpnAttributes[MAXWEAPONS];
 char wpnAttrName[MAXWEAPONS][MAXATTRIB][64];
 char wpnAttrPlugin[MAXWEAPONS][MAXATTRIB][64];
-char wpnAttrValue[MAXWEAPONS][MAXATTRIB][64];*/
+char wpnAttrValue[MAXWEAPONS][MAXATTRIB][64];
 
 //Temp Variables for parsing weapons
 char smcFilePath[PLATFORM_MAX_PATH];
@@ -101,6 +101,10 @@ public void WeaponSMC_End(SMCParser smc, bool halted, bool failed) {
     PrintToServer("%i : Name: %s", i, wpnName[i]);
     PrintToServer("%i : Base Index: %i", i, wpnBaseIndex[i]);
     PrintToServer("%i : Type: %i", i, wpnType[i]);
+    PrintToServer("%i : Attributes: %i", i, wpnAttributes[i]);
+    for(int a = 0; a < wpnAttributes[i]; a++) {
+        PrintToServer("%i : %i : %s / %s / %s", i, a, wpnAttrName[i][a], wpnAttrPlugin[i][a], wpnAttrValue[i][a]);
+    }
     wpnCount++;
 }
 
@@ -110,10 +114,16 @@ public SMCResult WeaponSMC_EnterSection(SMCParser smc, const char[] name, bool o
         //The first section will be the custom weapon's classname
         strcopy(wpnClass[wpnCount], sizeof(wpnClass[]), name);
         wpnLookup.SetValue(name, wpnCount);
+    } else if(StrEqual(smcSection, "attributes", false)) {
+        //Entered a sub section of the attributes
+        int attribs = wpnAttributes[wpnCount];
+        strcopy(wpnAttrName[wpnCount][attribs], sizeof(wpnAttrName[][]), name);
+        wpnAttributes[wpnCount]++;
     }
+
     if(StrEqual(name, "attributes", false) || 
-	   StrEqual(name, "viewmodelprops", false) || 
-	   StrEqual(name, "worldmodelprops", false)) {
+       StrEqual(name, "viewmodelprops", false) || 
+       StrEqual(name, "worldmodelprops", false)) {
         strcopy(smcSection, sizeof(smcSection), name);
         PrintToServer("Entering Section: %s", name);
     }
@@ -139,9 +149,12 @@ public SMCResult WeaponSMC_KeyValue(SMCParser smc, const char[] key, const char[
         }
     } else if(StrEqual(smcSection, "attributes", false)) {
         //Attribute Properties
-        
+        int attribs = wpnAttributes[wpnCount]-1; //Since we add one when we enter the section, we should subtract one now.
+        if(StrEqual(key, "plugin", false)) {
+            strcopy(wpnAttrPlugin[wpnCount][attribs], sizeof(wpnAttrPlugin[][]), value);
+        } else if(StrEqual(key, "value", false)) {
+            strcopy(wpnAttrValue[wpnCount][attribs], sizeof(wpnAttrPlugin[][]), value);
+        }
     }
-    
-    
 }
 
