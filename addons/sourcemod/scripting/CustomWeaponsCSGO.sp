@@ -1,5 +1,5 @@
 #pragma semicolon 1
-#define PLUGIN_VERSION "1.0.0"
+#define PLUGIN_VERSION "1.0.0-ALPHA"
 
 public Plugin myinfo = {
     name = "Custom Weapons API",
@@ -33,7 +33,6 @@ public Action Command_Recache(int client, int args) {
 #define MAXWEAPONS 50
 StringMap wpnLookup;
 int wpnCount;
-//int wpnIndex[MAXWEAPONS];
 
 //Weapon Characteristics
 char wpnClass[MAXWEAPONS][64];
@@ -61,7 +60,6 @@ public void CacheWeapons() {
         wpnLookup.Clear();
     }
     
-    
     //Search the custom weapons directory to find any configured weapons
     char sPath[PLATFORM_MAX_PATH];
     BuildPath(Path_SM, sPath, sizeof(sPath),"configs/customweapons/");
@@ -71,7 +69,6 @@ public void CacheWeapons() {
     smc.OnStart = WeaponSMC_Start;
     smc.OnEnd = WeaponSMC_End;
     smc.OnEnterSection = WeaponSMC_EnterSection;
-    //smc.OnLeaveSection = WeaponSMC_LeaveSection;
     smc.OnKeyValue = WeaponSMC_KeyValue;
     SMCError smcError;
     
@@ -125,13 +122,8 @@ public SMCResult WeaponSMC_EnterSection(SMCParser smc, const char[] name, bool o
        StrEqual(name, "viewmodelprops", false) || 
        StrEqual(name, "worldmodelprops", false)) {
         strcopy(smcSection, sizeof(smcSection), name);
-        PrintToServer("Entering Section: %s", name);
     }
 }
-
-/*public SMCResult WeaponSMC_LeaveSection(SMCParser smc) {
-    
-}*/
 
 public SMCResult WeaponSMC_KeyValue(SMCParser smc, const char[] key, const char[] value, bool key_quotes, bool value_quotes) {
     if(StrEqual(smcSection, "main", false)) {
@@ -157,4 +149,6 @@ public SMCResult WeaponSMC_KeyValue(SMCParser smc, const char[] key, const char[
         }
     }
 }
+
+
 
